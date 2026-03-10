@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDGARAGE | 車は「金融設計」から選ぶもの</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1EA7FF', // 明るくクリアな水色
+                        secondary: '#0A89D8',
+                        accent: '#06C755', // LINE Green
+                        lightBlue: '#eaf7ff',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS Animation CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            color: #333;
+        }
+        /* ファーストビューの背景設定（明るい水色のオーバーレイ＋車の画像） */
+        .hero-bg {
+            background-image: linear-gradient(rgba(30, 167, 255, 0.70), rgba(10, 137, 216, 0.78)), url('https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .text-shadow {
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.35);
+        }
+        /* Q&A用のアニメーション */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out;
+            opacity: 0;
+        }
+        .faq-answer.open {
+            max-height: 300px;
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+        .open .faq-icon {
+            transform: rotate(45deg);
+        }
+        /* 浮遊するCTAボタン（モバイル用） */
+        .floating-cta {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            left: 20px;
+            z-index: 50;
+        }
+        .tiktok-card blockquote {
+            margin: 0 auto !important;
+        }
+        .sns-slider-wrap {
+            overflow: hidden;
+        }
+        .sns-slider-track {
+            display: flex;
+            gap: 1rem;
+            width: max-content;
+            animation: slide-left-loop 36s linear infinite;
+            will-change: transform;
+        }
+        .sns-slider-track:hover {
+            animation-play-state: paused;
+        }
+        .sns-card {
+            width: min(86vw, 340px);
+            background: #fff;
+            border: 1px solid #dbeafe;
+            border-radius: 1rem;
+            box-shadow: 0 10px 24px rgba(30, 167, 255, 0.12);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .sns-card iframe,
+        .sns-card .tiktok-embed {
+            width: 100% !important;
+            margin: 0 !important;
+        }
+        .sns-thumb-link {
+            display: block;
+            background: #fff;
+        }
+        .sns-thumb {
+            width: 100%;
+            height: 610px;
+            object-fit: cover;
+            display: block;
+            background: #fff;
+        }
+        .sns-card iframe {
+            height: 610px;
+            border: 0;
+            display: block;
+            background: #fff;
+        }
+        @keyframes slide-left-loop {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-50%);
+            }
+        }
+        @media (min-width: 768px) {
+            .floating-cta {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-sky-50">
+
+    <!-- Header -->
+    <header class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-black text-primary tracking-wider">UDGARAGE</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="#strengths" class="text-gray-600 hover:text-primary font-medium transition">UDGARAGEの強み</a>
+                    <a href="#comparison" class="text-gray-600 hover:text-primary font-medium transition">他社との違い</a>
+                    <a href="#tiktok" class="text-gray-600 hover:text-primary font-medium transition">TikTok</a>
+                    <a href="https://lin.ee/IUEfgZZ" target="_blank" class="bg-accent text-white px-6 py-2 rounded-full font-bold hover:bg-green-600 transition shadow-lg flex items-center gap-2">
+                        <i class="fab fa-line text-xl"></i> LINE限定審査
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ファーストビュー (Hero Section) -->
+    <section class="relative hero-bg h-screen min-h-[600px] flex items-center justify-center pt-24 md:pt-28">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/30"></div>
+        <div class="relative z-10 text-center px-4 w-full max-w-5xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
+            <h1 class="mt-6 md:mt-0 text-3xl md:text-5xl lg:text-7xl font-black text-white leading-tight mb-8 text-shadow tracking-tight">
+                <span class="block mb-2 text-2xl md:text-4xl lg:text-5xl font-bold">車は</span>
+                <span class="text-yellow-300">「在庫」</span>から選ぶものではない。<br class="hidden md:block" />
+                <span class="text-cyan-100">「金融設計」</span>から選ぶものだ。
+            </h1>
+            
+            <div class="bg-white/20 backdrop-blur-md p-6 md:p-8 rounded-2xl text-left md:text-center max-w-3xl mx-auto border border-white/30 shadow-2xl">
+                <p class="text-white text-base md:text-lg leading-relaxed font-medium">
+                    多くの中古車販売店では店頭在庫の中から車を選びます。<br>
+                    しかし本来、車の購入は金融と密接に関係しています。<br><br>
+                    ・月々の返済額　・ローン条件<br>
+                    ・信用情報　　　・総支払額<br><br>
+                    これらを考えずに車だけを先に決めてしまうと<br>
+                    後から無理な支払いになることもあります。
+                </p>
+                <div class="mt-6 pt-6 border-t border-white/30">
+                    <p class="text-white text-lg md:text-xl font-bold">
+                        UDGARAGEでは、車ではなく「金融設計」から車選びを始めます。<br>
+                        車を売る店ではなく、車の購入方法を設計する店。<br>
+                        それがUDGARAGEです。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-10">
+                <a href="https://lin.ee/IUEfgZZ" target="_blank" class="inline-flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full font-bold text-xl hover:bg-green-600 transition-all transform hover:scale-105 shadow-xl shadow-emerald-700/30">
+                    <i class="fab fa-line text-3xl"></i>
+                    まずはLINEで無料相談
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- UDGARAGEの考え方 -->
+    <section class="py-20 bg-white">
+        <div class="max-w-4xl mx-auto px-4 text-center" data-aos="fade-up">
+            <h2 class="text-3xl font-bold text-primary mb-6">車の購入は、ただの買い物ではありません。</h2>
+            <p class="text-lg text-gray-700 leading-relaxed mb-10">
+                多くの場合、ローンという金融商品を利用します。<br>
+                だからこそ重要なのは、<br>
+                <span class="font-bold text-black bg-cyan-100 px-2">「どのローンを使うのか」「返済は無理がないか」「信用情報に影響しないか」</span><br>
+                という金融面です。
+            </p>
+            
+            <div class="bg-lightBlue p-8 rounded-2xl border border-sky-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-2 h-full bg-primary"></div>
+                <h3 class="text-2xl font-bold mb-6">UDGARAGEでは、この3つを一体で考えます</h3>
+                <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md mx-auto mb-4 border-2 border-primary">
+                            <i class="fa-solid fa-building-columns text-3xl text-primary"></i>
+                        </div>
+                        <span class="font-bold text-xl">金融</span>
+                    </div>
+                    <div class="hidden md:block text-primary text-3xl"><i class="fa-solid fa-plus"></i></div>
+                    <div class="block md:hidden text-primary text-2xl"><i class="fa-solid fa-plus"></i></div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md mx-auto mb-4 border-2 border-primary">
+                            <i class="fa-solid fa-car text-3xl text-primary"></i>
+                        </div>
+                        <span class="font-bold text-xl">車両調達</span>
+                    </div>
+                    <div class="hidden md:block text-primary text-3xl"><i class="fa-solid fa-plus"></i></div>
+                    <div class="block md:hidden text-primary text-2xl"><i class="fa-solid fa-plus"></i></div>
+                    <div class="text-center">
+                        <div class="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-md mx-auto mb-4 border-2 border-primary">
+                            <i class="fa-solid fa-file-invoice-dollar text-3xl text-primary"></i>
+                        </div>
+                        <span class="font-bold text-xl">返済設計</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 強みセクション -->
+    <section id="strengths" class="py-20 bg-sky-100/40">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-primary font-bold tracking-widest text-sm">STRENGTHS</span>
+                <h2 class="text-3xl md:text-4xl font-black mt-2">UDGARAGE 4つの強み</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 強み1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="100">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-primary text-2xl">
+                            <i class="fa-solid fa-handshake"></i>
+                        </div>
+                        <h3 class="text-xl font-bold leading-tight">
+                            <span class="text-sm text-gray-500 block mb-1">強み①</span>
+                            ローン会社の選択肢が<br>圧倒的に広い
+                        </h3>
+                    </div>
+                    <div class="text-gray-700 space-y-4">
+                        <p>一般的な中古車店では提携ローン会社が数社程度で、審査に落ちれば終わりということもあります。</p>
+                        <p class="font-medium">UDGARAGEでは、複数の金融機関・信販会社と提携し、状況に応じて最適なローンを検討可能です。</p>
+                        <ul class="bg-gray-50 p-4 rounded-lg space-y-2 text-sm font-medium">
+                            <li><i class="fa-solid fa-check text-primary mr-2"></i>過去に審査に落ちた</li>
+                            <li><i class="fa-solid fa-check text-primary mr-2"></i>借入が多い</li>
+                            <li><i class="fa-solid fa-check text-primary mr-2"></i>信用情報に不安がある</li>
+                        </ul>
+                        <p>という方でも状況を整理しながら購入方法を検討できます。現在のローン条件が不利な場合には、<strong>借り換えや条件見直しの相談も可能</strong>です。</p>
+                    </div>
+                </div>
+
+                <!-- 強み2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="200">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-primary text-2xl">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h3 class="text-xl font-bold leading-tight">
+                            <span class="text-sm text-gray-500 block mb-1">強み②</span>
+                            車は在庫ではなく<br>「返済能力」から選ぶ
+                        </h3>
+                    </div>
+                    <div class="text-gray-700 space-y-4">
+                        <p>一般的な販売店のような「この車どうですか？」という提案はしません。</p>
+                        <p class="font-medium text-primary">まず最初に考えるのは「月々いくらなら無理なく支払えるのか」ということです。</p>
+                        <div class="flex gap-2 justify-center py-2">
+                            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm font-bold">生活状況</span>
+                            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm font-bold">既存借入</span>
+                            <span class="bg-gray-100 px-3 py-1 rounded-full text-sm font-bold">返済能力</span>
+                        </div>
+                        <p>これらを踏まえ、現実的な購入計画を設計します。そして、その条件に合う車を全国から探します。<br>
+                        <strong>車を先に決めるのではなく、返済計画に合う車を選ぶ。</strong>それがUDGARAGEの車選びです。</p>
+                    </div>
+                </div>
+
+                <!-- 強み3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="300">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-primary text-2xl">
+                            <i class="fa-solid fa-map-location-dot"></i>
+                        </div>
+                        <h3 class="text-xl font-bold leading-tight">
+                            <span class="text-sm text-gray-500 block mb-1">強み③</span>
+                            全国から車を<br>取り寄せ可能
+                        </h3>
+                    </div>
+                    <div class="text-gray-700 space-y-4">
+                        <p>UDGARAGEでは、店舗在庫だけで販売することはありません。</p>
+                        <p>全国の<strong>「業販ネットワーク」「中古車オークション」</strong>などを利用し、希望条件に合う車を全国規模で探すことが可能です。</p>
+                        <ul class="bg-gray-50 p-4 rounded-lg space-y-2 text-sm font-medium">
+                            <li><i class="fa-solid fa-check text-primary mr-2"></i>在庫に縛られない</li>
+                            <li><i class="fa-solid fa-check text-primary mr-2"></i>車種の選択肢が広がる</li>
+                            <li><i class="fa-solid fa-check text-primary mr-2"></i>条件に近い車が見つかる</li>
+                        </ul>
+                        <p class="font-bold text-center mt-4">車は「店にあるものから選ぶ時代」ではありません。全国から最適な一台を探す時代です。</p>
+                    </div>
+                </div>
+
+                <!-- 強み4 -->
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-primary hover:shadow-xl transition-shadow" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-primary text-2xl">
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                        </div>
+                        <h3 class="text-xl font-bold leading-tight">
+                            <span class="text-sm text-gray-500 block mb-1">強み④</span>
+                            すべてのローンが<br>信用情報の回復につながる
+                        </h3>
+                    </div>
+                    <div class="text-gray-700 space-y-4">
+                        <p>世の中には「信用回復ローン」という言葉がありますが、そのような特別な金融商品が存在するわけではありません。</p>
+                        <p>信用情報は、約束通りの支払いを継続することで回復します。</p>
+                        <div class="bg-lightBlue p-4 rounded-lg border border-sky-200">
+                            <p class="font-bold text-primary text-center">
+                                UDGARAGEが扱うローンは、すべて<br>信用情報機関に登録される正規のローンです。
+                            </p>
+                        </div>
+                        <p>誠実に返済を続ければ、すべての契約が信用情報の回復につながります。特別な商品ではなく、<strong>正しい金融商品を使うこと。それが信用回復の本質です。</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 他社との違い -->
+    <section id="comparison" class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <span class="text-primary font-bold tracking-widest text-sm">COMPARISON</span>
+                <h2 class="text-3xl md:text-4xl font-black mt-2 mb-6">車の購入方法 3つのパターン</h2>
+                <p class="text-gray-600">UDGARAGEは、従来の考え方とは全く違うアプローチを取ります。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- パターン1 -->
+                <div class="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col" data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-center mb-6 pb-4 border-b border-gray-200">
+                        <span class="inline-block bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs font-bold mb-3">パターン1</span>
+                        <h3 class="text-xl font-bold">一般的な<br>中古車販売店</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-600 flex-grow">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-gray-400 mt-1"></i> 在庫中心の販売</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-gray-400 mt-1"></i> ローン会社が少ない</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-gray-400 mt-1"></i> 審査に落ちると終了</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-minus text-gray-400 mt-1"></i> 金融設計がない</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-gray-200 text-center text-sm font-bold text-gray-500">
+                        基本的には<br>「この在庫を売る」販売スタイル
+                    </div>
+                </div>
+
+                <!-- パターン2 -->
+                <div class="bg-red-50 border border-red-100 rounded-2xl p-6 shadow-sm flex flex-col" data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-center mb-6 pb-4 border-b border-red-200">
+                        <span class="inline-block bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-bold mb-3">パターン2</span>
+                        <h3 class="text-xl font-bold">自社ローン・信用回復ローンを謳う業者</h3>
+                    </div>
+                    <ul class="space-y-4 text-gray-700 flex-grow text-sm">
+                        <li>「審査なし」という言葉を使う店も増えていますが、特別な商品は存在しません。</li>
+                        <li class="flex items-start gap-2 text-red-600 font-medium"><i class="fa-solid fa-triangle-exclamation mt-1"></i> 金利や手数料が非常に高い</li>
+                        <li class="flex items-start gap-2 text-red-600 font-medium"><i class="fa-solid fa-triangle-exclamation mt-1"></i> 通すことが目的</li>
+                        <li class="flex items-start gap-2 text-red-600 font-medium"><i class="fa-solid fa-triangle-exclamation mt-1"></i> その後の返済設計は考えない</li>
+                        <li class="text-xs text-gray-500 mt-2">※自社ローンの場合、信用情報機関に登録されず、支払いを続けても回復につながらないケースもあります。</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-red-200 text-center text-sm font-bold text-red-600">
+                        ローンを通すことがゴール。<br>契約後は返済能力に委ねられる。
+                    </div>
+                </div>
+
+                <!-- UDGARAGE -->
+                <div class="bg-primary border-2 border-primary rounded-2xl p-6 shadow-2xl flex flex-col transform md:-translate-y-4 relative" data-aos="fade-up" data-aos-delay="300">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-300 text-black px-4 py-1 rounded-full text-sm font-bold shadow-md">
+                        新しい基準
+                    </div>
+                    <div class="text-center mb-6 pb-4 border-b border-white/20 mt-2">
+                        <h3 class="text-2xl font-black text-white">UDGARAGE</h3>
+                        <p class="text-cyan-100 text-sm mt-2">車屋でありながら金融設計を中心に考える販売店</p>
+                    </div>
+                    <ul class="space-y-4 text-white flex-grow font-medium">
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-300 mt-1"></i> ローン会社の選択肢が広い</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-300 mt-1"></i> 状況に応じて審査の可能性を検討</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-300 mt-1"></i> 全国から車両調達</li>
+                        <li class="flex items-start gap-2"><i class="fa-solid fa-circle-check text-yellow-300 mt-1"></i> 返済計画を重視</li>
+                    </ul>
+                    <div class="mt-6 pt-4 border-t border-white/20 text-center">
+                        <p class="text-sm text-cyan-100 mb-2">最も重要なのは</p>
+                        <p class="font-bold text-white text-lg">ローンを通すことを<br>ゴールにしていないこと</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 将来の提案 -->
+            <div class="mt-12 max-w-3xl mx-auto bg-lightBlue border border-sky-200 rounded-xl p-6 text-center" data-aos="fade-up">
+                <p class="text-gray-700 leading-relaxed font-medium">
+                    仮に、最初のローン条件が高めの金利になる場合でも、そこで終わりではありません。<br>
+                    支払い実績を積み重ね、信用情報が改善した段階で、<br>
+                    <span class="text-primary font-bold text-xl border-b-2 border-primary pb-1">借り換えによる条件改善の提案</span> まで行います。<br>
+                    <br>
+                    入口だけではなく、その先の金融状況まで考える。それがUDGARAGEの考え方です。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 新しい車選びの基準 -->
+    <section class="py-20 bg-sky-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-20 bg-[url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1920&auto=format&fit=crop')] bg-cover bg-center"></div>
+        <div class="absolute inset-0 bg-primary/80 mix-blend-multiply"></div>
+        
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10" data-aos="fade-up">
+            <h2 class="text-3xl md:text-5xl font-black mb-8">これからの新しい車選びの基準</h2>
+            
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 mb-12 text-xl md:text-2xl font-bold">
+                <div class="bg-white/10 px-6 py-4 rounded-lg backdrop-blur-sm line-through text-gray-300">
+                    どの車を買うか
+                </div>
+                <div class="text-3xl"><i class="fa-solid fa-arrow-right md:rotate-0 rotate-90"></i></div>
+                <div class="bg-primary border border-white/30 px-6 py-4 rounded-lg backdrop-blur-sm shadow-xl">
+                    どの金融設計で買うか
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-3 md:gap-6 mb-10">
+                <span class="px-4 py-2 bg-white/20 rounded-full font-bold">車両</span>
+                <span class="text-2xl flex items-center text-yellow-300"><i class="fa-solid fa-xmark"></i></span>
+                <span class="px-4 py-2 bg-white/20 rounded-full font-bold">ローン</span>
+                <span class="text-2xl flex items-center text-yellow-300"><i class="fa-solid fa-xmark"></i></span>
+                <span class="px-4 py-2 bg-white/20 rounded-full font-bold">信用情報</span>
+                <span class="text-2xl flex items-center text-yellow-300"><i class="fa-solid fa-xmark"></i></span>
+                <span class="px-4 py-2 bg-white/20 rounded-full font-bold">将来の借り換え</span>
+            </div>
+            
+            <p class="text-xl md:text-2xl font-bold leading-relaxed">
+                これらを一体で考えること。<br>それが、これからの新しい車の買い方です。<br>
+                UDGARAGEは、その新しい基準を先頭に立って実践しています。
+            </p>
+        </div>
+    </section>
+
+    <!-- 全国対応・オンライン完結 -->
+    <section class="py-16 bg-white border-b border-gray-100">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+                <div class="md:w-1/2 text-center md:text-left" data-aos="fade-right">
+                    <h2 class="text-3xl font-black text-primary mb-6">全国対応・オンライン完結</h2>
+                    <p class="text-gray-700 text-lg mb-6 leading-relaxed">
+                        UDGARAGEは全国のお客様に対応しています。遠方の方でも安心してご相談いただけます。
+                    </p>
+                    <ul class="space-y-3 font-bold text-gray-800 inline-block text-left">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-mobile-screen-button text-primary text-xl w-6"></i> 来店不要</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-laptop text-primary text-xl w-6"></i> オンライン手続き可能</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-truck-fast text-primary text-xl w-6"></i> 全国から車両取り寄せ</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-map-location-dot text-primary text-xl w-6"></i> 遠方納車対応</li>
+                    </ul>
+                </div>
+                <div class="md:w-1/2" data-aos="fade-left">
+                    <div class="bg-cyan-50 rounded-full p-10 w-64 h-64 mx-auto flex items-center justify-center relative">
+                        <i class="fa-solid fa-earth-asia text-7xl text-primary opacity-50 absolute"></i>
+                        <i class="fa-solid fa-car-side text-5xl text-primary absolute bottom-1/3 left-1/4 transform -translate-x-4"></i>
+                        <i class="fa-solid fa-laptop-house text-4xl text-secondary absolute top-1/4 right-1/4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SNS -->
+    <section id="tiktok" class="py-20 bg-sky-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-10" data-aos="fade-up">
+                <h2 class="text-3xl font-black text-primary">SNS動画</h2>
+            </div>
+            <div class="bg-white rounded-2xl border border-sky-100 shadow-sm p-4 md:p-6" data-aos="zoom-in">
+                <div class="sns-slider-wrap">
+                    <div class="sns-slider-track">
+                        <article class="sns-card">
+                            <div class="px-4 py-3 border-b border-sky-100 text-sm font-bold text-gray-700">TikTok</div>
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@udgarage/video/7556185280772967701?lang=ja-JP" data-video-id="7556185280772967701" style="max-width: 605px; min-width: 325px;">
+                                <section>
+                                    <a target="_blank" title="@udgarage" href="https://www.tiktok.com/@udgarage?lang=ja-JP">@udgarage</a>
+                                </section>
+                            </blockquote>
+                        </article>
+
+                        <article class="sns-card">
+                            <div class="px-4 py-3 border-b border-sky-100 text-sm font-bold text-gray-700">YouTube Shorts</div>
+                            <a class="sns-thumb-link" href="https://youtube.com/shorts/QKA9I7I6wcM?si=lhzB0ZR-cPDqPTEz" target="_blank" rel="noopener noreferrer">
+                                <img class="sns-thumb" src="C:/Users/yamam/.cursor/projects/c-Users-yamam-OneDrive-Desktop-UDGARAGE-LINE/assets/c__Users_yamam_OneDrive_Desktop_UDGARAGE__LINE___________2026-03-10_132244.png" alt="YouTube Shorts サムネイル">
+                            </a>
+                        </article>
+
+                        <article class="sns-card">
+                            <div class="px-4 py-3 border-b border-sky-100 text-sm font-bold text-gray-700">Instagram</div>
+                            <iframe src="https://www.instagram.com/p/DOkCguQkyiu/embed" title="UDGARAGE Instagram" loading="lazy" allowfullscreen></iframe>
+                        </article>
+
+                        <article class="sns-card" aria-hidden="true">
+                            <div class="px-4 py-3 border-b border-sky-100 text-sm font-bold text-gray-700">TikTok</div>
+                            <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@udgarage/video/7556185280772967701?lang=ja-JP" data-video-id="7556185280772967701" style="max-width: 605px; min-width: 325px;">
+                                <section>
+                                    <a target="_blank" title="@udgarage" href="https://www.tiktok.com/@udgarage?lang=ja-JP">@udgarage</a>
+                                </section>
+                            </blockquote>
+                        </article>
+
+                        <article class="sns-card" aria-hidden="true">
+                            <div class="px-4 py-3 border-b border-sky-100 text-sm font-bold text-gray-700">YouTube Shorts</div>
+                            <a class="sns-thumb-link" href="https://youtube.com/shorts/QKA9I7I6wcM?si=lhzB0ZR-cPDqPTEz" target="_blank" rel="noopener noreferrer">
+                                <img class="sns-thumb" src="C:/Users/yamam/.cursor/projects/c-Users-yamam-OneDrive-Desktop-UDGARAGE-LINE/assets/c__Users_yamam_OneDrive_Desktop_UDGARAGE__LINE___________2026-03-10_132244.png" alt="YouTube Shorts サムネイル">
+                            </a>
+                        </article>
+
+                        <article class="sns-card" aria-hidden="true">
+                            <div class="px-4 py-3 border-b border-sky-100 text-sm font-bold text-gray-700">Instagram</div>
+                            <iframe src="https://www.instagram.com/p/DOkCguQkyiu/embed" title="UDGARAGE Instagram 2" loading="lazy" allowfullscreen></iframe>
+                        </article>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-4">
+                    直接見る:
+                    <a href="https://www.tiktok.com/@udgarage/video/7556185280772967701?lang=ja-JP" target="_blank" class="text-primary font-bold underline">TikTok</a>
+                    /
+                    <a href="https://youtube.com/shorts/QKA9I7I6wcM?si=lhzB0ZR-cPDqPTEz" target="_blank" class="text-primary font-bold underline">YouTube</a>
+                    /
+                    <a href="https://www.instagram.com/p/DOkCguQkyiu/" target="_blank" class="text-primary font-bold underline">Instagram</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Q&A -->
+    <section class="py-20 bg-gray-50">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-12" data-aos="fade-up">
+                <h2 class="text-3xl font-black">よくあるご質問</h2>
+            </div>
+
+            <div class="space-y-4" data-aos="fade-up" data-aos-delay="100">
+                <!-- Q1 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex items-start gap-4">
+                            <span class="text-primary font-black text-xl">Q</span>
+                            <span class="font-bold text-gray-800 mt-1">過去にローン審査に落ちました。相談できますか？</span>
+                        </div>
+                        <i class="fa-solid fa-plus text-gray-400 faq-icon"></i>
+                    </button>
+                    <div class="faq-answer bg-gray-50 px-6 px-4 ml-10">
+                        <div class="flex items-start gap-4">
+                            <span class="text-accent font-black text-xl">A</span>
+                            <p class="text-gray-700">可能です。<br>状況を確認し、複数のローンの可能性を検討します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex items-start gap-4">
+                            <span class="text-primary font-black text-xl">Q</span>
+                            <span class="font-bold text-gray-800 mt-1">借入が多いのですが購入できますか？</span>
+                        </div>
+                        <i class="fa-solid fa-plus text-gray-400 faq-icon"></i>
+                    </button>
+                    <div class="faq-answer bg-gray-50 px-6 px-4 ml-10">
+                        <div class="flex items-start gap-4">
+                            <span class="text-accent font-black text-xl">A</span>
+                            <p class="text-gray-700">返済計画によります。<br>まずは現状を整理し、無理のない購入方法を検討します。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex items-start gap-4">
+                            <span class="text-primary font-black text-xl">Q</span>
+                            <span class="font-bold text-gray-800 mt-1">希望の車種が決まっていません。</span>
+                        </div>
+                        <i class="fa-solid fa-plus text-gray-400 faq-icon"></i>
+                    </button>
+                    <div class="faq-answer bg-gray-50 px-6 px-4 ml-10">
+                        <div class="flex items-start gap-4">
+                            <span class="text-accent font-black text-xl">A</span>
+                            <p class="text-gray-700">問題ありません。<br>返済計画や用途から車種提案も可能です。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex items-start gap-4">
+                            <span class="text-primary font-black text-xl">Q</span>
+                            <span class="font-bold text-gray-800 mt-1">遠方でも購入できますか？</span>
+                        </div>
+                        <i class="fa-solid fa-plus text-gray-400 faq-icon"></i>
+                    </button>
+                    <div class="faq-answer bg-gray-50 px-6 px-4 ml-10">
+                        <div class="flex items-start gap-4">
+                            <span class="text-accent font-black text-xl">A</span>
+                            <p class="text-gray-700">全国対応可能です。<br>車両は全国から調達できます。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                    <button class="w-full px-6 py-4 text-left flex justify-between items-center focus:outline-none" onclick="toggleFaq(this)">
+                        <div class="flex items-start gap-4">
+                            <span class="text-primary font-black text-xl">Q</span>
+                            <span class="font-bold text-gray-800 mt-1">来店しなくても契約できますか？</span>
+                        </div>
+                        <i class="fa-solid fa-plus text-gray-400 faq-icon"></i>
+                    </button>
+                    <div class="faq-answer bg-gray-50 px-6 px-4 ml-10">
+                        <div class="flex items-start gap-4">
+                            <span class="text-accent font-black text-xl">A</span>
+                            <p class="text-gray-700">オンライン手続きが可能です。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA セクション -->
+    <section class="py-20 bg-gradient-to-br from-green-500 to-green-600 text-white text-center">
+        <div class="max-w-4xl mx-auto px-4" data-aos="zoom-in">
+            <h2 class="text-3xl md:text-5xl font-black mb-4">LINE限定審査</h2>
+            <p class="text-xl md:text-2xl font-bold mb-8">ローン審査はLINEだけの限定審査へ</p>
+            <p class="mb-10 text-green-100">公式LINEから簡単にお申し込みいただけます。<br>状況の整理やご相談だけでもお気軽にどうぞ。</p>
+            
+            <a href="https://lin.ee/IUEfgZZ" target="_blank" class="inline-flex items-center justify-center gap-3 bg-white text-accent px-10 py-5 rounded-full font-black text-2xl hover:bg-gray-100 transition-all transform hover:scale-105 shadow-2xl">
+                <i class="fab fa-line text-4xl"></i>
+                LINEで無料相談・審査へ進む
+            </a>
+        </div>
+    </section>
+
+    <!-- フッター・店舗情報 -->
+    <footer class="bg-gray-900 text-gray-300 py-16">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div>
+                <h3 class="text-2xl font-black text-white mb-6">UDGARAGE 岡山本店</h3>
+                <div class="space-y-4 text-sm leading-relaxed">
+                    <p>
+                        〒700-0975<br>
+                        岡山県岡山市北区今4丁目15-33
+                    </p>
+                    <p class="text-xl font-bold text-white mt-4 flex items-center gap-2">
+                        <i class="fa-solid fa-phone text-primary"></i> 086-236-8377
+                    </p>
+                    <p class="text-gray-400">FAX: 086-899-6172</p>
+                </div>
+            </div>
+            
+            <div class="md:text-right">
+                <p class="font-bold text-white mb-4 text-lg">事業内容</p>
+                <ul class="space-y-2 inline-block text-left md:text-right">
+                    <li><i class="fa-solid fa-angle-right text-primary mr-2 md:hidden"></i> 車探し</li>
+                    <li><i class="fa-solid fa-angle-right text-primary mr-2 md:hidden"></i> ローン相談</li>
+                    <li><i class="fa-solid fa-angle-right text-primary mr-2 md:hidden"></i> 借り換え相談</li>
+                </ul>
+                <p class="mt-6 text-sm text-gray-400">お気軽にご相談ください。</p>
+            </div>
+        </div>
+        <div class="max-w-6xl mx-auto px-4 mt-12 pt-8 border-t border-gray-800 text-center text-sm text-gray-500">
+            &copy; 2026 UDGARAGE (株式会社アップドラフト). All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- モバイル用 固定CTAボタン -->
+    <div class="floating-cta">
+        <a href="https://lin.ee/IUEfgZZ" target="_blank" class="flex items-center justify-center gap-2 bg-accent text-white py-4 px-6 rounded-full font-bold text-lg shadow-[0_4px_15px_rgba(6,199,85,0.5)] active:scale-95 transition-transform w-full">
+            <i class="fab fa-line text-2xl"></i> LINEで無料相談
+        </a>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script async src="https://www.tiktok.com/embed.js"></script>
+    <script async src="https://www.instagram.com/embed.js"></script>
+    <script>
+        // AOS Animation Initialize
+        AOS.init({
+            once: true,
+            offset: 100,
+            duration: 800,
+            easing: 'ease-out-cubic',
+        });
+
+        // FAQ Accordion Toggle
+        function toggleFaq(button) {
+            const answer = button.nextElementSibling;
+            const parent = button.parentElement;
+            
+            // 全てのFAQを閉じる（アコーディオンの挙動を1つだけ開くようにする場合）
+            // document.querySelectorAll('.faq-answer').forEach(el => {
+            //     if(el !== answer) {
+            //         el.classList.remove('open');
+            //         el.previousElementSibling.parentElement.classList.remove('open');
+            //     }
+            // });
+
+            // クリックされたものを切り替え
+            answer.classList.toggle('open');
+            parent.classList.toggle('open');
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shadow-md');
+                header.classList.remove('shadow-sm', 'bg-white/95');
+                header.classList.add('bg-white');
+            } else {
+                header.classList.remove('shadow-md', 'bg-white');
+                header.classList.add('shadow-sm', 'bg-white/95');
+            }
+        });
+    </script>
+</body>
+</html>
